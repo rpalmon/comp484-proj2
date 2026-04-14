@@ -8,6 +8,7 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
     $('.treat-button').click(clickedTreatButton);
     $('.play-button').click(clickedPlayButton);
     $('.exercise-button').click(clickedExerciseButton);
+    $('.reset').click(resetPet);
   
     //when any buton is clicked, save pet_info to local storage
     $('button').click(function() {
@@ -46,6 +47,19 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
       activity_log.push(activityLogEntry); // Add the new log entry to the activity_log array
       console.log("Updated activity_log:", activity_log);
       localStorage.setItem('activity_log', JSON.stringify(activity_log)); // Save the updated activity_log to local storage
+    }
+
+    function resetPet() {
+      if (confirm("Are you sure you want to reset your pet? This will clear all progress and activity log.")) {
+        pet_info = {name:"My Pet Name", weight:0, happiness:0};
+        activity_log = [];
+        localStorage.removeItem('pet_info');
+        localStorage.removeItem('activity_log');
+        $('.activity-list').empty();
+        checkAndUpdatePetInfoInHtml();
+        } else {
+          return false;
+        }
     }
 
 
