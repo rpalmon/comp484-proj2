@@ -102,6 +102,9 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
 
       } else {
         console.warn("Pet weight cannot be negative");
+        updateActivityLog(': <error>Tried to play with pet, but weight cannot be negative. No changes made.</error>');
+        //make error red
+        $('error').css('color', 'red');
         return false;
       }
       checkAndUpdatePetInfoInHtml();
