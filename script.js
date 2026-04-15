@@ -33,6 +33,8 @@ $(function() {
   });
 });
 
+// Create a new pet object with default values
+// The ID is generated using the current timestamp and a random string to ensure uniqueness.
 function createDefaultPet(name) {
   return {
     id: Date.now().toString() + Math.random().toString(16).slice(2),
@@ -166,7 +168,7 @@ function updateActivityLog(action) {
   }
 
   var currentDateTime = getCurrentDateTime();
-  var activityLogEntry = currentDateTime + ': ' + action;
+  var activityLogEntry = '<timestamp>' + currentDateTime + '</timestamp> ' + action;
   $('.activity-list').prepend('<li>' + activityLogEntry + '</li>');
   pet.activity_log.push(activityLogEntry);
   persistPets();
@@ -208,6 +210,8 @@ function submitNameEdit() {
   cancelNameEdit();
 }
 
+// Add a text input for editing the pet's name, along with a cancel button, 
+// and disable the edit button to prevent multiple inputs
 function addEditNameInput() {
   var currentName = getActivePet().name;
   
@@ -251,7 +255,7 @@ function resetPet() {
   }
 }
 
-//gets current date and time in the format MM/DD/YYYY HH:MM:SS
+//gets current date and time in the format MM/DD/YYYY HH:MM:SS AM/PM
 function getCurrentDateTime() {
   var currentDate = new Date();
   var date = currentDate.getDate();
@@ -261,7 +265,15 @@ function getCurrentDateTime() {
   var minutes = currentDate.getMinutes();
   var seconds = currentDate.getSeconds();
 
-  return month + '/' + date + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+  var amPm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // 0 becomes 12
+  
+  // Pad minutes and seconds with leading zeros
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  seconds = seconds < 10 ? '0' + seconds : seconds;
+
+  return month + '/' + date + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds + ' ' + amPm;
 }
 
 //clicked treat button increases happiness by 10 and weight by 5, 

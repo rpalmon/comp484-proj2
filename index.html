@@ -28,32 +28,36 @@
         <button class="add-pet-button" type="button" aria-label="Create a new pet">+</button>
       </section>
 
-      <section class="pet-image-container">
-        <!-- Replace pet image with your own pet image -->
-        <img class="pet-image" src="/images/dino.webp" alt="Your pet image">
-      </section>
-      <section class="dashboard">
-        <div id="pet-name">Name: <strong><span class="name"></span></strong><button class="edit-name-button button">Edit</button></div>
-        <div>Weight: <strong><span class="weight"></span> pounds</strong></div>
-        <div>Happiness: <strong><span class="happiness"></span> tail wags (per min)</strong></div>
-        <div class="button-container">
-          <button class="treat-button">
-            Treat
-          </button>
-          <button class="play-button">
-            Play
-          </button>
-          <button class="exercise-button">
-            Exercise
-          </button>
+      <div class="main-content">
+        <div class="left-column">
+          <section class="pet-image-container">
+            <!-- Replace pet image with your own pet image -->
+            <img class="pet-image" src="/images/dino.webp" alt="Your pet image">
+          </section>
+          <section class="dashboard">
+            <div id="pet-name">Name: <strong><span class="name"></span></strong><button class="edit-name-button button">Edit</button></div>
+            <div>Weight: <strong><span class="weight"></span> pounds</strong></div>
+            <div>Happiness: <strong><span class="happiness"></span> tail wags (per min)</strong></div>
+            <div class="button-container">
+              <button class="treat-button">
+                Treat
+              </button>
+              <button class="play-button">
+                Play
+              </button>
+              <button class="exercise-button">
+                Exercise
+              </button>
+            </div>
+          </section>
         </div>
-      </section>
-      <section class="activity-log">
-        <h2>Activity Log</h2>
-        <ul class="activity-list">
-          <!-- Activity log items will go here -->
-        </ul>
-      </section>
+        <section class="activity-log">
+          <h2>Activity Log</h2>
+          <ul class="activity-list">
+            <!-- Activity log items will go here -->
+          </ul>
+        </section>
+      </div>
     </main>
 
     <!-- Your web-app is https, so your scripts need to be too -->
