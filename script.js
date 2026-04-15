@@ -19,6 +19,7 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
       localStorage.setItem('activity_log', JSON.stringify(activity_log));
     });
     
+    // ready() runs this after the DOM is fully loaded so elements like .activity-list exist
     //when page is loaded, check if pet_info exists in local storage and load it
     $(document).ready(function() {
       var storedPetInfo = localStorage.getItem('pet_info');
@@ -29,6 +30,7 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
         $('.activity-list').empty(); // Clear existing activity log in HTML before loading from local storage 
         console.log("Loaded activity_log from local storage:", activity_log);
         for (var i = activity_log.length - 1; i >= 0; i--) {
+          // append() adds each saved item to the bottom while we loop newest->oldest
           $('.activity-list').append('<li>' + activity_log[i] + '</li>');
         }
         console.log("Loaded pet_info from local storage:", pet_info);
