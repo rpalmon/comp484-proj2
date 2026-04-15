@@ -10,6 +10,7 @@ var exerciseWeight = 3;
 var pets = [];
 var activePetId = null;
 
+//used .ready() to add make sure everything is loaded and then it will do the following
 $(document).ready(function() {
   initializePetState();
   renderPetTabs();
@@ -152,6 +153,8 @@ function createPetFromTabs() {
     return;
   }
 
+  //trims the pet name from whitespace example:
+  //"    name    " becomes "name"
   petName = $.trim(petName);
   if (!petName) {
     petName = suggestedName;
@@ -176,7 +179,7 @@ function renderActivityLog() {
   }
 
   for (var i = pet.activity_log.length - 1; i >= 0; i--) {
-    // Prepend each log entry so the most recent activity appears at the top of the list.
+    // append each log entry so the most recent activity appears at the top of the list.
     $('.activity-list').append('<li>' + pet.activity_log[i] + '</li>');
   }
 }
