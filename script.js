@@ -10,7 +10,7 @@ var exerciseWeight = 3;
 var pets = [];
 var activePetId = null;
 
-$(function() {
+$(document).ready(function() {
   initializePetState();
   renderPetTabs();
   checkAndUpdatePetInfoInHtml();
