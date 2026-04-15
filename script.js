@@ -41,9 +41,23 @@ function createDefaultPet(name) {
     name: name || 'My Pet Name',
     weight: 0,
     happiness: 0,
-    image: '/images/dino.webp',
+    image: 'images/dino.webp',
     activity_log: []
   };
+}
+
+// Ensure image URLs are GitHub Pages-safe for project deployments.
+function normalizePetImagePath(imagePath) {
+  if (!imagePath) {
+    return 'images/dino.webp';
+  }
+
+  // Convert site-root absolute paths (e.g., /images/dino.webp) to relative paths.
+  if (imagePath.charAt(0) === '/') {
+    return imagePath.substring(1);
+  }
+
+  return imagePath;
 }
 
 // Initialize the pet by loading from localstorage if it exists, or creating a new pet if not.
@@ -70,6 +84,10 @@ function initializePetState() {
   if (!pets.length) {
     pets = [createDefaultPet('My Pet Name')];
   }
+
+  pets.forEach(function(pet) {
+    pet.image = normalizePetImagePath(pet.image);
+  });
 
   activePetId = storedActivePetId;
   if (!getActivePet()) {
