@@ -189,10 +189,30 @@
     color: red;
   }
 
+  happiness-decreased {
+    color: red;
+  }
+
+  weight-decreased {
+    color: green;
+  }
+
   header {
     display: flex;
     align-items: center;
     padding: auto;
+  }
+
+  .edit-name-button {
+    margin-left: 10px;
+    font-size: 15px;
+    background-color: #1e2835;
+    border-color: #404853;
+    cursor: pointer;
+    background-image: linear-gradient(to bottom, rgba(246, 246, 246, .1) 0%, rgba(30, 40, 53, 0) 66%);
+    color: #fafafa;
+    width: 80px;
+    height: 30px;
   }
 
   header button {
@@ -204,5 +224,24 @@
     background-image: linear-gradient(to bottom, rgba(246, 246, 246, .1) 0%, rgba(30, 40, 53, 0) 66%);
     color: #fafafa;
     width: 100px;
+    height: 30px;
+  }
+
+  .edit-name-input {
+    margin-left: 10px;
+    font-size: 15px;
+    padding: 5px;
+    width: 150px;
+  }
+
+  .cancel-edit-name-button {
+    margin-left: 10px;
+    font-size: 15px;
+    background-color: #1e2835;
+    border-color: #404853;
+    cursor: pointer;
+    background-image: linear-gradient(to bottom, rgba(246, 246, 246, .1) 0%, rgba(30, 40, 53, 0) 66%);
+    color: #fafafa;
+    width: 80px;
     height: 30px;
   }

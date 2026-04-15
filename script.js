@@ -1,4 +1,12 @@
 
+// Pet stat change constants
+var treatHappiness = 10;
+var treatWeight = 5;
+var playHappiness = 5;
+var playWeight = 2;
+var exerciseHappiness = 5;
+var exerciseWeight = 3;
+
 var pets = [];
 var activePetId = null;
 
@@ -8,14 +16,17 @@ $(function() {
   checkAndUpdatePetInfoInHtml();
   renderActivityLog();
 
+  // Attach click handlers for action buttons
   $('.treat-button').click(clickedTreatButton);
   $('.play-button').click(clickedPlayButton);
   $('.exercise-button').click(clickedExerciseButton);
   $('.reset').click(resetPet);
+  $('.edit-name-button').click(addEditNameInput); 
+    
 
   $('.add-pet-button').click(createPetFromTabs);
 
-  // Use event delegation because pet tabs are generated dynamically.
+  // Event delegation for pet tab buttons (dynamically generated)
   $('.pet-tabs-list').on('click', '.pet-tab-button', function() {
     var selectedPetId = $(this).attr('data-pet-id');
     setActivePet(selectedPetId);
@@ -74,11 +85,13 @@ function getActivePet() {
   return null;
 }
 
+// Save the current state of pets and active pet ID to localStorage
 function persistPets() {
   localStorage.setItem('pets', JSON.stringify(pets));
   localStorage.setItem('active_pet_id', activePetId);
 }
 
+//display the pet tabs based on the current pets array and active pet ID
 function renderPetTabs() {
   var $tabsList = $('.pet-tabs-list');
   $tabsList.empty();
@@ -94,10 +107,12 @@ function renderPetTabs() {
       $tabButton.addClass('active');
     }
 
+    //append the tab button to the tabs list
     $tabsList.append($tabButton);
   });
 }
 
+// Set the active pet based on the clicked tab and update the UI accordingly
 function setActivePet(petId) {
   activePetId = petId;
   persistPets();
@@ -106,6 +121,7 @@ function setActivePet(petId) {
   renderActivityLog();
 }
 
+// Create a new pet based on user input and add it to the pets array, then update the UI
 function createPetFromTabs() {
   var suggestedName = 'Pet ' + (pets.length + 1);
   var petName = prompt('Name your new pet:', suggestedName);
@@ -138,6 +154,7 @@ function renderActivityLog() {
   }
 
   for (var i = pet.activity_log.length - 1; i >= 0; i--) {
+    // Prepend each log entry so the most recent activity appears at the top of the list.
     $('.activity-list').append('<li>' + pet.activity_log[i] + '</li>');
   }
 }
@@ -153,6 +170,67 @@ function updateActivityLog(action) {
   $('.activity-list').prepend('<li>' + activityLogEntry + '</li>');
   pet.activity_log.push(activityLogEntry);
   persistPets();
+}
+
+// Update the pet's name based on user input, then update the UI and persist the changes
+function editPetName(oldName, newName) {
+  var pet = getActivePet();
+  if (!pet) {
+    return false;
+  }
+
+  pet.name = newName;
+  persistPets();
+  checkAndUpdatePetInfoInHtml();
+  renderPetTabs();
+  
+  // Log the name change with both old and new names
+  updateActivityLog('<changedName>Name changed from ' + oldName + ' to ' + newName + '</changedName>');
+  $('changedName').css('color', 'blue');
+  return true;
+}
+
+function cancelNameEdit() {
+  $('.edit-name-input').remove();
+  $('.cancel-edit-name-button').remove();
+  $('.edit-name-button').prop('disabled', false);
+}
+
+function submitNameEdit() {
+  var oldName = getActivePet().name;
+  var newName = $.trim($('.edit-name-input').val());
+  
+  if (!newName) {
+    return;
+  }
+  
+  editPetName(oldName, newName);
+  cancelNameEdit();
+}
+
+function addEditNameInput() {
+  var currentName = getActivePet().name;
+  
+  // Add text input below name with current name as placeholder
+  $('#pet-name').append('<input type="text" class="edit-name-input" placeholder="' + currentName + '">');
+  $('.edit-name-input').focus();
+  
+  // Add cancel button
+  $('#pet-name').append('<button class="cancel-edit-name-button button">Cancel</button>');
+  
+  // Prevent multiple edit inputs by disabling the edit button
+  $('.edit-name-button').prop('disabled', true);
+  
+  // Cancel button handler
+  $('.cancel-edit-name-button').click(cancelNameEdit);
+  
+  // Enter key handler to submit the name change
+  $('.edit-name-input').keypress(function(e) {
+    if (e.which === 13) {
+      submitNameEdit();
+      return false;
+    }
+  });
 }
 
 function resetPet() {
@@ -173,6 +251,7 @@ function resetPet() {
   }
 }
 
+//gets current date and time in the format MM/DD/YYYY HH:MM:SS
 function getCurrentDateTime() {
   var currentDate = new Date();
   var date = currentDate.getDate();
@@ -185,28 +264,32 @@ function getCurrentDateTime() {
   return month + '/' + date + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds;
 }
 
+//clicked treat button increases happiness by 10 and weight by 5, 
+//then updates the activity log and pet info in HTML
 function clickedTreatButton() {
   var pet = getActivePet();
   if (!pet) {
     return;
   }
 
-  pet.happiness += 10;
-  pet.weight += 5;
-  updateActivityLog('Gave a treat. <happiness>Happiness increased by 10</happiness>, <weight>weight increased by 5</weight>.');
+  pet.happiness += treatHappiness;
+  pet.weight += treatWeight;
+  updateActivityLog('Gave a treat. <happiness>Happiness increased by ' + treatHappiness + '</happiness>, <weight>Weight increased by ' + treatWeight + '</weight>.');
   checkAndUpdatePetInfoInHtml();
 }
 
+//clicked play button increases happiness by 5 and decreases weight by 2,
+//then updates the activity log and pet info in HTML
 function clickedPlayButton() {
   var pet = getActivePet();
   if (!pet) {
     return;
   }
 
-  pet.happiness += 5;
+  pet.happiness += playHappiness;
 
   if (pet.weight > 0) {
-    pet.weight -= 2;
+    pet.weight -= playWeight;
     var petImage = $('.pet-image');
     petImage.removeClass('spin');
     void petImage[0].offsetWidth;
@@ -215,40 +298,45 @@ function clickedPlayButton() {
       petImage.removeClass('spin');
     }, 1000);
 
-    updateActivityLog('Played with pet. <happiness>Happiness increased by 5</happiness>, <weight>weight decreased by 2</weight>.');
+    updateActivityLog('Played with pet. <happiness>Happiness increased by ' + playHappiness + '</happiness>, <weight-decreased>Weight decreased by ' + playWeight + '</weight-decreased>.');
   } else {
-    console.warn('Pet weight cannot be negative');
-    updateActivityLog('<error>Tried to play with pet, but weight cannot be negative. No changes made.</error>');
+    console.warn('Cannot play: pet weight is already at 0');
+    updateActivityLog('<error>Tried to play with pet, but weight is already at 0. No changes made.</error>');
     return false;
   }
 
   checkAndUpdatePetInfoInHtml();
 }
 
+//clicked exercise button decreases happiness by 5 and decreases weight by 3,
+//then updates the activity log and pet info in HTML
 function clickedExerciseButton() {
   var pet = getActivePet();
   if (!pet) {
     return;
   }
 
-  if (pet.happiness === 0 && pet.weight === 0) {
-    console.warn('Pet happiness or weight cannot be negative');
-    updateActivityLog('<error>Tried to exercise pet, but both stats are already at 0. No changes made.</error>');
+  if (pet.weight <= 0) {
+    console.warn('Cannot exercise: pet weight is already at 0');
+    updateActivityLog('<error>Tried to exercise pet, but weight is already at 0. No changes made.</error>');
     return false;
   }
 
-  pet.happiness -= 5;
-  pet.weight -= 3;
+  pet.happiness -= exerciseHappiness;
+  pet.weight -= exerciseWeight;
   checkAndUpdatePetInfoInHtml();
-  updateActivityLog('Exercised pet. <happiness>Happiness decreased by 5</happiness>, <weight>weight decreased by 3</weight>.');
+  updateActivityLog('Exercised pet. <happiness-decreased>Happiness decreased by ' + exerciseHappiness + '</happiness-decreased>, <weight-decreased>Weight decreased by ' + exerciseWeight + '</weight-decreased>.');
 }
 
+// Check that weight and happiness are not negative before updating the HTML, 
+// then update the pet info in the HTML and persist the changes
 function checkAndUpdatePetInfoInHtml() {
   checkWeightAndHappinessBeforeUpdating();
   updatePetInfoInHtml();
   persistPets();
 }
 
+// Ensure that weight and happiness values do not go below 0 before updating the HTML
 function checkWeightAndHappinessBeforeUpdating() {
   var pet = getActivePet();
   if (!pet) {
@@ -264,6 +352,8 @@ function checkWeightAndHappinessBeforeUpdating() {
   }
 }
 
+// Update the pet info in the HTML based on the active pet's current state,
+//  including name, weight, happiness, and image
 function updatePetInfoInHtml() {
   var pet = getActivePet();
   if (!pet) {
