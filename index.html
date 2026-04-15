@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Your Giga Pet</title>
     <meta name="description" content="A cool thing made with Glitch">
@@ -23,9 +23,14 @@
     </header>
 
     <main>
+      <section class="pet-manager" aria-label="Pet tabs manager">
+        <div class="pet-tabs-list" role="tablist" aria-label="Your pets"></div>
+        <button class="add-pet-button" type="button" aria-label="Create a new pet">+</button>
+      </section>
+
       <section class="pet-image-container">
-         <!-- Replace pet image with your own pet image -->
-        <img class="pet-image" src="/images/dino.webp" alt="A cute dog">
+        <!-- Replace pet image with your own pet image -->
+        <img class="pet-image" src="/images/dino.webp" alt="Your pet image">
       </section>
       <section class="dashboard">
         <div>Name: <strong><span class="name"></span></strong></div>

@@ -12,6 +12,47 @@
     display:block;
     height:175px;
   }
+
+  .pet-manager {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+  }
+
+  .pet-tabs-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pet-tab-button {
+    border: 1px solid #1e2835;
+    background: #f2f5f8;
+    color: #1e2835;
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .pet-tab-button.active {
+    background: #1e2835;
+    color: #fafafa;
+  }
+
+  .add-pet-button {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid #1e2835;
+    background: #fff;
+    color: #1e2835;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+  }
   
   header {
     border-bottom: 1px solid black;
@@ -70,7 +111,7 @@
     float:left;
     padding:10px;
   }
-  
+
   .dashboard {
     float:left;
     padding:20px;
