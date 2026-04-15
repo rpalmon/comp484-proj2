@@ -153,8 +153,14 @@ function createPetFromTabs() {
     return;
   }
 
-  //trims the pet name from whitespace example:
-  //"    name    " becomes "name"
+
+/*
+.trim() is a jQuery method used to rfemove the whitespace from the beginning and end of a string
+example:
+var str = "   Hello World!   ";
+var trimmedStr = $.trim(str);
+console.log(trimmedStr); // Output: "Hello World!"
+*/  
   petName = $.trim(petName);
   if (!petName) {
     petName = suggestedName;
