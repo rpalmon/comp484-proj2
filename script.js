@@ -28,9 +28,9 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
         activity_log = JSON.parse(localStorage.getItem('activity_log')) || [];
         $('.activity-list').empty(); // Clear existing activity log in HTML before loading from local storage 
         console.log("Loaded activity_log from local storage:", activity_log);
-        activity_log.forEach(function(logEntry) {
-          $('.activity-list').append('<li>' + logEntry + '</li>');
-        });
+        for (var i = activity_log.length - 1; i >= 0; i--) {
+          $('.activity-list').append('<li>' + activity_log[i] + '</li>');
+        }
         console.log("Loaded pet_info from local storage:", pet_info);
         console.log("Loaded activity_log from local storage:", activity_log);
         checkAndUpdatePetInfoInHtml();
@@ -43,7 +43,7 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
     function updateActivityLog(action) {
       var currentDateTime = getCurrentDateTime();
       var activityLogEntry = currentDateTime + ': ' + action;
-      $('.activity-list').append('<li>' + activityLogEntry + '</li>');
+      $('.activity-list').prepend('<li>' + activityLogEntry + '</li>');
       activity_log.push(activityLogEntry); // Add the new log entry to the activity_log array
       console.log("Updated activity_log:", activity_log);
       localStorage.setItem('activity_log', JSON.stringify(activity_log)); // Save the updated activity_log to local storage
@@ -110,9 +110,8 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
           petImage.removeClass('spin');
         }, 1000);
 
-        var currentDateTime = getCurrentDateTime();
-        var activityLogEntry = currentDateTime + ': Played with pet. <happiness>Happiness increased by 5</happiness>, <weight>weight decreased by 2</weight>.';
-        $('.activity-list').append('<li>' + activityLogEntry + '</li>');
+        var activityLogEntry = 'Played with pet. <happiness>Happiness increased by 5</happiness>, <weight>weight decreased by 2</weight>.';
+        updateActivityLog(activityLogEntry);
 
       } else {
         console.warn("Pet weight cannot be negative");
@@ -128,10 +127,17 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
       // Decrease pet happiness
       // Decrease pet weight
       checkAndUpdatePetInfoInHtml();
-      if (pet_info.happiness > 0) {
+      if (pet_info.happiness > 0 && pet_info.weight > 0) {
         pet_info.happiness -= 5;
+        pet_info.weight -= 3;
+        var currentDateTime = getCurrentDateTime();
+        var activityLogEntry =  ': Exercised pet. <happiness>Happiness decreased by 5</happiness>, <weight>weight decreased by 3</weight>.';
+        // $('.activity-list').append('<li>' + activityLogEntry + '</li>');
+        updateActivityLog(activityLogEntry);
+        checkAndUpdatePetInfoInHtml();
+
       } else {
-        console.warn("Pet happiness cannot be negative");
+        console.warn("Pet happiness or weight cannot be negative");
         return false;
       }
     }
@@ -142,7 +148,13 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
     }
     
     function checkWeightAndHappinessBeforeUpdating() {
-      // Add conditional so if weight is lower than zero.
+      if (pet_info.weight < 0) {
+        pet_info.weight = 0;
+      }
+
+      if (pet_info.happiness < 0) {
+        pet_info.happiness = 0;
+      }
     }
     
     // Updates your HTML with the current values in your pet_info object
