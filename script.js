@@ -46,6 +46,7 @@ function createDefaultPet(name) {
   };
 }
 
+// Initialize the pet by loading from localstorage if it exists, or creating a new pet if not.
 function initializePetState() {
   var storedPets = localStorage.getItem('pets');
   var storedActivePetId = localStorage.getItem('active_pet_id');
@@ -78,6 +79,7 @@ function initializePetState() {
   persistPets();
 }
 
+//gets the currently active pet object based on the activePetId, or returns null if not found
 function getActivePet() {
   for (var i = 0; i < pets.length; i++) {
     if (pets[i].id === activePetId) {
@@ -161,6 +163,7 @@ function renderActivityLog() {
   }
 }
 
+// Add a new entry to the activity log for the active pet, including a timestamp, then persist the changes and update the UI
 function updateActivityLog(action) {
   var pet = getActivePet();
   if (!pet) {
@@ -192,12 +195,15 @@ function editPetName(oldName, newName) {
   return true;
 }
 
+// Remove the edit name input and cancel button, and re-enable the edit button
 function cancelNameEdit() {
   $('.edit-name-input').remove();
   $('.cancel-edit-name-button').remove();
   $('.edit-name-button').prop('disabled', false);
 }
 
+//Get the new name from the input, validate it, 
+//then call editPetName to update the pet's name and cancel the edit mode
 function submitNameEdit() {
   var oldName = getActivePet().name;
   var newName = $.trim($('.edit-name-input').val());
@@ -237,6 +243,7 @@ function addEditNameInput() {
   });
 }
 
+//Reset the active pet's weight, happiness, and activity log to their default values,
 function resetPet() {
   var pet = getActivePet();
   if (!pet) {
