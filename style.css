@@ -31,7 +31,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    flex: 0 0 auto;
+    flex: 0 0 60%;
+    min-width: 0;
   }
 
   .pet-manager {
@@ -174,7 +175,8 @@
   .activity-log {
     border: 2px solid #1e2835;
     border-radius: 8px;
-    flex: 1;
+    flex: 0 0 40%;
+    min-width: 0;
     padding: 15px;
     text-align: center;
     max-height: calc(100vh - 220px);
