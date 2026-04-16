@@ -1,4 +1,22 @@
+/* 
+jquery used: .trim() and .append()
+what .trim() does:
+the .trim() method in jQuery is used to remove whitespace from the beginning and end of a string.
 
+what .append() does:
+the .append() method in jQuery is used to insert content at the end of the selected element.
+
+places where .trim() is used:
+- In the createPetFromTabs function, to trim whitespace from the pet name input before validating it.
+- In the submitNameEdit function, to trim whitespace from the new name input before validating it.
+places where .append() is used:
+- In the renderPetTabs function, to append each pet tab button to the tabs list.
+- In the renderActivityLog function, to append each activity log entry to the activity list.
+- In the addEditNameInput function, to append the edit name input and cancel button to the pet name container.
+
+
+
+*/
 // Pet stat change constants
 var treatHappiness = 10;
 var treatWeight = 5;
